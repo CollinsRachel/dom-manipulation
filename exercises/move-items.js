@@ -12,8 +12,9 @@
  */
 
 // Your code goes here...
-
-
+const elm = document.getElementsByClassName('item');
+const allItems = Array.from(elm); 
+console.log(`${elm} ${allItems}` );
 
 /**
  * @task
@@ -23,7 +24,7 @@
  * */
 
 // Your code goes here
-
+const main = document.getElementById('main');
 
 
 /**
@@ -34,7 +35,7 @@
  */
 
 // Your code goes here
-
+const favs = document.getElementById('favs');
 
 
 /**
@@ -47,7 +48,20 @@
  */
 
 // Your code goes here
+const updateCollections = (id, direction) => {
+    const elm = document.getElementById(id);
 
+    if(direction === 'toFavs') {
+        favs.appendChild(elm);
+        elm.querySelector('i').classList.remove('fa-heart-circle-plus');
+        elm.querySelector('i').classList.add('fa-heart-crack');
+    } else if (direction === 'toMain') {
+        main.appendChild(elm);
+        elm.querySelector('i').classList.remove('fa-heart-crack');
+        elm.querySelector('i').classList.add('fa-heart-circle-plus');
+
+    }
+}
 
 
 /**
@@ -66,4 +80,11 @@
 
 // Your code goes here...
 
-
+allItems.forEach((elm => {
+    elm.addEventListener('click', () => {
+        const itemID = parseInt(elm.id);
+        const itemParentID = elm.parentNode.id;
+        const direction = itemParentID === 'main' ? 'toFavs' : 'toMain';
+        updateCollections(itemID, direction);
+    });
+}));

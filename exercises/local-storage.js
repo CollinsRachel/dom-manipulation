@@ -38,3 +38,62 @@
  */
 
 // Your code goes here...
+const container = document.querySelector('.cardsContainer');
+const allCards = document.querySelectorAll('.card');
+
+
+const updateBG = (elm) => {
+const favorites = JSON.parse(localStorage.getItem('favorites'));
+  if (favorites.includes(elm)) {
+    const item = document.getElementById(elm);
+    if (item) {
+      item.style.background = 'red';
+    }
+  } else {
+    const item = document.getElementById(elm);
+    if (item) {
+      item.style.background = '';
+    }
+  }
+}
+
+for(const card of allCards) {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (favorites.includes(card.id)) {
+      updateBG(card.id);
+    }  
+}
+
+const addFavorite = (elm)  => {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (!favorites.includes(elm)) {
+      favorites.push(elm);
+      localStorage.setItem('favorites', JSON.stringify(favorites)) || [];
+      updateBG(elm);
+    }
+}
+
+const removeFavorite = (elm) => {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const updatedFavorites = favorites.filter((id) => id !== elm);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites)) || [];
+    updateBG(elm);
+}
+
+const updateLocalStorage = (elm) => {
+    const faves = JSON.parse(localStorage.getItem('favorites')) || [];
+    if(!faves.includes(elm)) {
+        addFavorite(elm);
+    } else {
+        removeFavorite(elm);
+    }
+}
+
+const clickedCardEvent = (event) => {
+    const cardClicked = event.target;
+
+    if(Array.from(cardClicked.classList).includes('card')) {
+        updateLocalStorage(cardClicked.id);
+    }
+}
+container.addEventListener('click', clickedCardEvent);
